@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerkId String @unique
+  email String @unique
+  firstName String? @unique
+  lastName String? @unique
+  createdAt DateTime @default(now())
+  subscription Subscription?
+  integrations Integration[]
+  automations Automation[]
+  docs Docs[]
+}
+
+model Subscription {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  plan SUBSCRIPTIONS @default(FREE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId String? @unique @db.Uuid
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Integration {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name INTEGRATIONS @default(INSTAGRAM)
+  instagramId String? @unique
+  token String @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+  userId String? @unique @db.Uuid
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Automation {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @default("Untitled")
+  active Boolean @default(false)
+  triggers Trigger[]
+  listener Listener?
+  posts Post[]
+  dms DM[]
+  keywords Keyword[]
+  createdAt DateTime @default(now())
+  userId String? @unique @db.Uuid
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trigger {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type String
+  automationId String? @db.Uuid
+  automation Automation? @relation(fields: [automationId], references: [id], onDelete: Cascade)
+}
+
+model Listener {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listener LISTENERS @default(MESSAGE)
+  prompt String
+  commentReply String?
+  commentsCount Int @default(0)
+  dmCount Int @default(0)
+  automationId String? @unique @db.Uuid
+  automation Automation? @relation(fields: [automationId], references: [id], onDelete: Cascade)
+}
+
+model Keyword {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  word String
+  automationId String? @db.Uuid
+  automation Automation? @relation(fields: [automationId], references: [id], onDelete: Cascade)
+  @@unique([automationId, word]) //this constraints ensure user cant use the same keyword on multiple automations
+}
+
+model Post {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postId String
+  caption String?
+  media String
+  mediaType MEDIATYPES @default(IMAGE)
+  automationId String? @db.Uuid
+  automation Automation? @relation(fields: [automationId], references: [id], onDelete: Cascade)
+}
+
+model DM {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  senderId String?
+  receiver String?
+  message String?
+  createdAt DateTime @default(now())
+  automationId String? @db.Uuid
+  automation Automation? @relation(fields: [automationId], references: [id], onDelete: Cascade)
+}
+
+model Docs {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fileName String
+  filePath String
+  comments Comments[]
+  neutralResults Int @default(0)
+  positiveResults Int @default(0)
+  negativeResults Int @default(0)
+  createdAt DateTime @default(now())
+  userId String? @db.Uuid 
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Comments {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  text String
+  result RESULTS @default(neutral)
+  accuracy Float[]
+  docId String? @db.Uuid
+  doc Docs? @relation(fields: [docId], references: [id], onDelete: Cascade)
+}
+
+enum SUBSCRIPTIONS {
+  PRO
+  FREE
+}
+
+enum INTEGRATIONS {
+  INSTAGRAM
+}
+
+enum LISTENERS {
+  SMARTAI
+  MESSAGE
+}
+
+enum MEDIATYPES {
+  IMAGE
+  VIDEO
+  ALBUM
+}
+
+enum RESULTS {
+  neutral
+  positive
+  negative
+}
