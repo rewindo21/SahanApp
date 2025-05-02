@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getUserDocWithComments } from "@/actions/user/queries";
 import { notFound } from "next/navigation";
 import CommentsList from "@/components/global/documents-single-page/comments-list";
