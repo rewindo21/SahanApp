@@ -14,21 +14,23 @@
 import { SignIn } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, startTransition } from "react";
 
 export default function SignInPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  const hasRedirected = useRef(false); // 👈
+  const hasRedirected = useRef(false);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && !hasRedirected.current) {
       hasRedirected.current = true;
-      router.push("/dashboard");
+      startTransition(() => {
+        router.push("/dashboard");
+      });
     }
   }, [isLoaded, isSignedIn]);
 
-  if (!isLoaded || isSignedIn) return null;
+  if (!isLoaded || (isLoaded && isSignedIn)) return null;
 
   return <SignIn />;
 }
