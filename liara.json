@@ -1,5 +1,7 @@
 {
     "app" : "sahanapp",
     "port" : 3000,
-    "buildCommand": "prisma generate && npm run build"
+    "build": {
+      "dockerfile": "./dockerfile"
+    }
 }
