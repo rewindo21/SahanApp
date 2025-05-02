@@ -1,10 +1,8 @@
-
-
 # Use Node.js v22.6.0 and install Bun
 FROM node:22.6.0-slim AS base
 
-# Install curl and git
-RUN apt-get update && apt-get install -y curl git && \
+# Install curl, and unzip
+RUN apt-get update && apt-get install -y curl unzip && \
     curl -fsSL https://bun.sh/install | bash && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
