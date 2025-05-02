@@ -1,7 +1,4 @@
 {
     "app" : "sahanapp",
-    "port" : 3000,
-    "build": {
-      "dockerfile": "./dockerfile"
-    }
+    "port" : 3000
 }
