@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { onIntegrate } from '@/actions/integrations'
 import { redirect } from 'next/navigation'
 

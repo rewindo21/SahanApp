@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { getAutomationInfo } from "@/actions/automations";
 import PostNode from "@/components/global/automations/post/post-node";
 import ThenNode from "@/components/global/automations/then/then-node";
