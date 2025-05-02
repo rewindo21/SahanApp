@@ -7,6 +7,7 @@ import {
 } from "@/actions/user/queries";
 import { onUserInfo } from "@/actions/user";
 import axios from "axios";
+import pLimit from 'p-limit';
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,6 +53,34 @@ export async function POST(req: NextRequest) {
     // <-- NEW
     const savedComments: { id: string; text: string }[] = doc.comments;
     // Send each comment to AI server for analysis
+
+    
+
+    // const limit = pLimit(5); // max 5 concurrent requests
+
+    // const analysisResults = await Promise.all(
+    //   savedComments.map(({ id, text }) =>
+    //     limit(async () => {
+    //       try {
+    //         const response = await axios.post(
+    //           `https://sahanai.liara.run/process-text/`,
+    //           new URLSearchParams({ text }),
+    //           {
+    //             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //             timeout: 10000, // optional: 10s timeout per request
+    //           }
+    //         );
+    //         const { sentiment, accuracy } = response.data;
+    //         await saveCommentAnalysis(id, sentiment, accuracy);
+    //         return { id, text, sentiment, accuracy };
+    //       } catch (err) {
+    //         console.error("AI error for comment:", text, err);
+    //         return null;
+    //       }
+    //     })
+    //   )
+    // );
+
     const analysisResults = await Promise.all(
       savedComments.map(async ({ id, text }) => {
         try {
