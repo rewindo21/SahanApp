@@ -14,11 +14,12 @@
 import { SignUp } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function SignUpPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const hasRedirected = useRef(false); // 👈
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
