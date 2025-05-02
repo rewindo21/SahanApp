@@ -22,8 +22,9 @@ export default function SignInPage() {
   const hasRedirected = useRef(false); // 👈
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push("/dashboard"); // or your initial redirect logic
+    if (isLoaded && isSignedIn && !hasRedirected.current) {
+      hasRedirected.current = true;
+      router.push("/dashboard");
     }
   }, [isLoaded, isSignedIn]);
 

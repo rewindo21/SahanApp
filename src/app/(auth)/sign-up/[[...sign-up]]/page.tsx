@@ -19,11 +19,12 @@ import { useEffect, useRef } from "react";
 export default function SignUpPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  const hasRedirected = useRef(false); // 👈
+  const hasRedirected = useRef(false); // 👈 Prevent repeated navigation
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push("/dashboard"); // or your initial redirect logic
+    if (isLoaded && isSignedIn && !hasRedirected.current) {
+      hasRedirected.current = true;
+      router.push("/dashboard");
     }
   }, [isLoaded, isSignedIn]);
 
