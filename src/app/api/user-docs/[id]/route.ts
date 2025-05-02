@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { onUserInfo } from "@/actions/user";
 
-
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
