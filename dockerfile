@@ -21,7 +21,7 @@ RUN bun i
 COPY . .
 
 # Generate Prisma client and build
-RUN prisma generate && bun run build
+RUN bunx prisma generate && bun run build
 
 # Expose port and run the app
 EXPOSE 3000
