@@ -1,24 +1,18 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import Papa from "papaparse";
-// import {
-//   saveDocAndComments,
-//   saveCommentAnalysis,
-//   updateDocSentimentCounts,
-// } from "@/actions/user/queries";
-// import { onUserInfo } from "@/actions/user";
+import {
+  saveDocAndComments,
+  saveCommentAnalysis,
+  updateDocSentimentCounts,
+} from "@/actions/user/queries";
+import { onUserInfo } from "@/actions/user";
 import axios from "axios";
 
 export async function POST(req: NextRequest) {
   try {
     const { filename, originalName, content } = await req.json();
-
-    // lazy import
-    const { onUserInfo } = await import("@/actions/user");
-    const {
-      saveDocAndComments,
-      saveCommentAnalysis,
-      updateDocSentimentCounts,
-    } = await import("@/actions/user/queries");
 
     if (!filename || !originalName || !content) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });

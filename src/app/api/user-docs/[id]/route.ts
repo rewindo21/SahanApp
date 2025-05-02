@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-//  import { onUserInfo } from "@/actions/user";
+import { onUserInfo } from "@/actions/user";
 
 
 export async function DELETE(
@@ -8,7 +10,6 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { onUserInfo } = await import("@/actions/user"); // ← lazy import
     const userResponse = await onUserInfo();
     const user = userResponse.data;
 

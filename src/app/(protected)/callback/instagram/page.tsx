@@ -1,4 +1,6 @@
-// import { onIntegrate } from '@/actions/integrations'
+export const dynamic = "force-dynamic";
+
+import { onIntegrate } from '@/actions/integrations'
 import { redirect } from 'next/navigation'
 
 type Props = {
@@ -10,7 +12,6 @@ type Props = {
 const Page = async ({ searchParams: { code } }: Props) => {
   if (code) {
     console.log(code)
-    const { onIntegrate } = await import("@/actions/integrations"); // ← lazy import
     const user = await onIntegrate(code.split('#_')[0])
 
     if (user.status === 200) {

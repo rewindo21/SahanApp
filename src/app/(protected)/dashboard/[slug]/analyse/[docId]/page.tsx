@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 
 import { getUserDocWithComments } from "@/actions/user/queries";
 import { notFound } from "next/navigation";
-// <-- NEW
 import CommentsList from "@/components/global/documents-single-page/comments-list";
 import DoughnutCharts from "@/components/global/documents-single-page/doughnut-chart";
 import BarChart from "@/components/global/documents-single-page/bar-chart";
