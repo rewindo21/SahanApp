@@ -32,7 +32,7 @@ const nextConfig = {
     INSTAGRAM_CLIENT_SECRET: process.env.INSTAGRAM_CLIENT_SECRET,
     INSTAGRAM_TOKEN_URL: process.env.INSTAGRAM_TOKEN_URL,
 
-    OPEN_AI_KEY: process.env.OPEN_AI_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
 }
 
