@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { onUserInfo } from "@/actions/user";
+// import { onUserInfo } from "@/actions/user";
 
 export async function GET(req: NextRequest) {
   try {
+    const { onUserInfo } = await import("@/actions/user"); // ← lazy import
     const userResponse = await onUserInfo();
     const user = userResponse.data;
 
