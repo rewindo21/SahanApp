@@ -9,28 +9,61 @@
 
 // export default Page
 
-// app/sign-up/page.tsx
+
+
+
+
+
+
+
+// "use client";
+// import { SignUp } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
+// import { useRouter } from "next/navigation";
+// import { useEffect, useRef, startTransition } from "react";
+
+// export default function SignUpPage() {
+//   const { isLoaded, isSignedIn } = useUser();
+//   const router = useRouter();
+//   const hasRedirected = useRef(false);
+
+//   useEffect(() => {
+//     if (isLoaded && isSignedIn && !hasRedirected.current) {
+//       hasRedirected.current = true;
+//       startTransition(() => {
+//         router.push("/dashboard");
+//       });
+//     }
+//   }, [isLoaded, isSignedIn]);
+
+//   if (!isLoaded || (isLoaded && isSignedIn)) return null;
+
+//   return <SignUp />;
+// }
+
+
+
+
+
+
+
 "use client";
 import { SignUp } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, startTransition } from "react";
+import { useEffect } from "react";
 
 export default function SignUpPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
-  const hasRedirected = useRef(false);
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && !hasRedirected.current) {
-      hasRedirected.current = true;
-      startTransition(() => {
-        router.push("/dashboard");
-      });
+    if (isLoaded && isSignedIn) {
+      router.replace("/dashboard");
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, router]);
 
-  if (!isLoaded || (isLoaded && isSignedIn)) return null;
+  if (!isLoaded) return null;
 
-  return <SignUp />;
+  return isSignedIn ? null : <SignUp />;
 }
