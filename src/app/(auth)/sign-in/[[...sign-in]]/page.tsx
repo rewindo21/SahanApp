@@ -49,22 +49,26 @@
 
 
 "use client";
+
 import { SignIn } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SignInPage() {
   const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
+    if (isLoaded && isSignedIn && !hasRedirected) {
+      setHasRedirected(true);
       router.replace("/dashboard");
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn, hasRedirected, router]);
 
   if (!isLoaded) return null;
+  if (isSignedIn) return null;
 
-  return isSignedIn ? null : <SignIn />;
+  return <SignIn />;
 }
