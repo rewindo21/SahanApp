@@ -15,15 +15,6 @@ const isProtectedRoute = createRouteMatcher([
 //   if (isProtectedRoute(req)) await auth.protect();
 // });
 
-// export const config = {
-//   matcher: [
-//     // Skip Next.js internals and all static files, unless found in search params
-//     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-//     // Always run for API routes
-//     "/(api|trpc)(.*)",
-//   ],
-// };
-
 export default clerkMiddleware(async (auth, req) => {
   const url = req.nextUrl.pathname;
 
@@ -31,6 +22,15 @@ export default clerkMiddleware(async (auth, req) => {
   if (url.startsWith("/sign-in") || url.startsWith("/sign-up")) return;
 
   if (isProtectedRoute(req)) {
-    await auth().protect();
+    await auth.protect();
   }
 });
+
+export const config = {
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
+};
