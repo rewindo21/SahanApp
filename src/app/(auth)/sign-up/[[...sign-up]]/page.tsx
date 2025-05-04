@@ -1,13 +1,15 @@
-// import { SignUp } from '@clerk/nextjs'
-// import React from 'react'
+"use client";
 
-// type Props = {}
+import { SignUp } from '@clerk/nextjs'
+import React from 'react'
 
-// const Page = (props: Props) => {
-//     return(<SignUp />)
-// }
+type Props = {}
 
-// export default Page
+const Page = (props: Props) => {
+    return(<SignUp />)
+}
+
+export default Page
 
 
 
@@ -44,18 +46,11 @@
 
 
 
-"use client";
-import { SignUp } from "@clerk/nextjs";
-
-export default function SignUpPage() {
-  return <SignUp />;
-}
-
-
-
 // "use client";
 // import { SignUp } from "@clerk/nextjs";
 
 // export default function SignUpPage() {
-//   return <SignUp fallbackRedirectUrl="/dashboard" />;
+//   return <SignUp />;
 // }
+
+
