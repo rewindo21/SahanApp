@@ -1,18 +1,36 @@
+'use client'
+
 import { onBoardUser } from '@/actions/user'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 type Props = {}
 
 // Asynchronous React component to handle user onboarding and redirection logic.
-const Page = async (props: Props) => {
+const Page = (props: Props) => {
     
-    // If the user onboarding is successful, redirect the user to their personalized dashboard.
-    const user = await onBoardUser()
-    if (user.status === 200 || user.status === 201) {
-        return redirect(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
-    }
+    const router = useRouter()
 
-    return redirect('/sign-in') 
+    useEffect(() => {
+        (async () => {
+            const user = await onBoardUser()
+            console.log(user)
+            if(user.status === 200 || user.status === 201)
+                router.push(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
+            else router.push('/sign-in')
+        })()
+    }, [])
+
+    return (
+        <div>Hello</div>
+    )
+    // If the user onboarding is successful, redirect the user to their personalized dashboard.
+    // const user = await onBoardUser()
+    // if (user.status === 200 || user.status === 201) {
+    //     return redirect(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
+    // }
+
+    // return redirect('/sign-in') 
 }
 
 export default Page
