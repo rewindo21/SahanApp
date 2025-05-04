@@ -1,36 +1,37 @@
-'use client'
+// 'use client'
 
-import { onBoardUser } from '@/actions/user'
-import { redirect, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+// import { onBoardUser } from '@/actions/user'
+// import { redirect, useRouter } from 'next/navigation'
+// import { useEffect } from 'react'
 
-type Props = {}
+// type Props = {}
 
-// Asynchronous React component to handle user onboarding and redirection logic.
-const Page = (props: Props) => {
+// // Asynchronous React component to handle user onboarding and redirection logic.
+// const Page = async (props: Props) => {
     
-    const router = useRouter()
+//     // If the user onboarding is successful, redirect the user to their personalized dashboard.
+//     const user = await onBoardUser()
+//     if (user.status === 200 || user.status === 201) {
+//         return redirect(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
+//     }
 
-    useEffect(() => {
-        (async () => {
-            const user = await onBoardUser()
-            console.log(user)
-            if(user.status === 200 || user.status === 201)
-                router.push(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
-            else router.push('/sign-in')
-        })()
-    }, [])
+//     return redirect('/sign-in') 
+// }
 
-    return (
-        <div>Hello</div>
-    )
-    // If the user onboarding is successful, redirect the user to their personalized dashboard.
-    // const user = await onBoardUser()
-    // if (user.status === 200 || user.status === 201) {
-    //     return redirect(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
-    // }
+// export default Page
 
-    // return redirect('/sign-in') 
+
+
+// app/onboard/page.tsx
+import { onBoardUser } from '@/actions/user'
+import { redirect } from 'next/navigation'
+
+export default async function OnBoardPage() {
+  const user = await onBoardUser()
+
+  if (user.status === 200 || user.status === 201) {
+    return redirect(`/dashboard/${user.data?.firstname}${user.data?.lastname}`)
+  }
+
+  return redirect('/sign-in')
 }
-
-export default Page
