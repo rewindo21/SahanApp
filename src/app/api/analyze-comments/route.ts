@@ -98,53 +98,57 @@
 // }
 
 import { NextRequest, NextResponse } from "next/server";
-import Papa from "papaparse";
 import {
-  saveDocAndComments,
+  getUserDocWithComments,
   saveCommentAnalysis,
   updateDocSentimentCounts,
 } from "@/actions/user/queries";
-import { onUserInfo } from "@/actions/user";
 import axios from "axios";
 
 export async function POST(req: NextRequest) {
   try {
-    const { filename, originalName, content } = await req.json();
+    const { docId } = await req.json();
 
-    if (!filename || !originalName || !content) {
-      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+    if (!docId) {
+      return NextResponse.json({ error: "Missing docId" }, { status: 400 });
     }
 
-    const parsed = Papa.parse<string[]>(content, {
-      skipEmptyLines: true,
-    });
-    const comments = parsed.data
-      .flat()
-      .map((c) => c.trim())
-      .filter((text) => text && isNaN(Number(text)));
-
-    if (comments.length === 0) {
-      return NextResponse.json({ error: "CSV contains no comments" }, { status: 400 });
+    const doc = await getUserDocWithComments(docId);
+    if (!doc || !doc.comments?.length) {
+      return NextResponse.json(
+        { error: "Document not found or has no comments" },
+        { status: 404 }
+      );
     }
 
-    const userResponse = await onUserInfo();
-    const user = userResponse.data;
-    if (!user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    for (const { id, text } of doc.comments) {
+      try {
+        const response = await axios.post(
+          "https://sahanai.liara.run/process-text/",
+          new URLSearchParams({ text }),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            timeout: 300000,
+            proxy: false,
+          }
+        );
+
+        const { sentiment, accuracy } = response.data;
+        await saveCommentAnalysis(id, sentiment, accuracy);
+      } catch (err) {
+        console.error("❌ Error analyzing comment:", text, err);
+      }
     }
 
-    const doc = await saveDocAndComments(originalName, filename, comments, user.id);
-
-    // 🔥 Offload analysis to a background trigger
-    await fetch(`${process.env.INTERNAL_ANALYSIS_URL}/api/analyze-doc`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ docId: doc.id }),
-    });
-
-    return NextResponse.json({ success: true, docId: doc.id });
+    await updateDocSentimentCounts(docId);
+    return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Upload Error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("Error during analysis:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
