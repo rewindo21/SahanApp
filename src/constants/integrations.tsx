@@ -1,26 +1,23 @@
-import { InstagramDuoToneBlue, SalesForceDuoToneBlue } from "@/icons"
+import { InstagramDuoToneBlue, SalesForceDuoToneBlue } from "@/icons";
 
 type Props = {
-  title: string
-  icon: React.ReactNode
-  description: string
-  strategy: 'INSTAGRAM' | 'CRM'
-}
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+  strategy: "INSTAGRAM" | "CRM";
+};
 
 export const INTEGRATION_CARDS: Props[] = [
   {
-    title: 'اینستاگرام',
-    description:
-      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+    title: "اینستاگرام",
+    description: "به زودی ...",
     icon: <InstagramDuoToneBlue />,
-    strategy: 'INSTAGRAM',
-    
+    strategy: "INSTAGRAM",
   },
   {
-    title: 'یوتیوب',
-    description:
-      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+    title: "یوتیوب",
+    description: "به زودی ...",
     icon: <SalesForceDuoToneBlue />,
-    strategy: 'CRM',
+    strategy: "CRM",
   },
-]
+];

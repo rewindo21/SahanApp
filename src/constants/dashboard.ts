@@ -1,29 +1,29 @@
-import { v4 } from 'uuid'
+import { v4 } from "uuid";
 
 type Props = {
-  id: string
-  label: string
-  subLabel: string
-  description: string
-}
+  id: string;
+  label: string;
+  subLabel: string;
+  description: string;
+};
 
 export const DASHBOARD_CARDS: Props[] = [
   {
     id: v4(),
-    label: 'تنظیم پاسخ‌های خودکار',
-    subLabel: 'محصولات را از طریق DM اینستاگرام تحویل دهید',
-    description: 'محصولات را در مکان های مختلف در معرض دید دنبال کنندگان خود قرار دهید',
+    label: "آنالیز فایل های CSV",
+    subLabel: "سرعت بخشیدن به آنایز رفتار کاربرانتان",
+    description: "فایل های CSV مختلف در دیتابیس خود را آپلود کنید",
   },
   {
     id: v4(),
-    label: 'با هوش مصنوعی به سوالات پاسخ دهید',
-    subLabel: 'پرس و جوها را با هوش مصنوعی شناسایی کرده و به آنها پاسخ دهید',
-    description: 'شناسایی خودکار هدف پیام',
+    label: "با هوش مصنوعی به سوالات پاسخ دهید",
+    subLabel: "",
+    description: "یه زودی ...",
   },
   {
     id: v4(),
-    label: 'با هوش مصنوعی به سوالات پاسخ دهید',
-    subLabel: 'پرس و جوها را با هوش مصنوعی شناسایی کرده و به آنها پاسخ دهید',
-    description: 'شناسایی خودکار هدف پیام',
+    label: "اتومات سازی دایرکت و کامنت اینستاگرام",
+    subLabel: "",
+    description: "به زودی ...",
   },
-]
+];

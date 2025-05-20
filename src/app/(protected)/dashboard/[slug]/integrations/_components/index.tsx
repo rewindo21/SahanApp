@@ -15,7 +15,7 @@ type Props = {
 
 const IntegrationCard = ({ description, icon, strategy, title }: Props) => {
   // wire up fetching data and get the integration from the db
-  const onInstaOAuth = () => onOAuthInstagram(strategy)
+  const onInstaOAuth = () => onOAuthInstagram(strategy);
 
   const { data } = useQuery({
     queryKey: ["user-profile"],
@@ -38,7 +38,7 @@ const IntegrationCard = ({ description, icon, strategy, title }: Props) => {
         disabled={integrated?.name === strategy}
         className="bg-gradient-to-br text-white rounded-full text-lg from-[#2ECCB4] font-medium to-[#17665A] hover:opacity-70 transition duration-100"
       >
-        {integrated ? 'Connected' : 'Connect'}
+        {integrated ? "متصل شد" : "اتصال"}
       </Button>
     </div>
   );
